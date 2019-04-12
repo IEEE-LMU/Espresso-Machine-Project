@@ -24,6 +24,13 @@ raw_card = raw_input()
 hash = hashlib.sha256(raw_card.encode())
 card = hash.hexdigest()
 
+user = None
+for u in users:
+    if u['card'] == card:
+        user = u
+        print('User already in the system!')
+        quit()
+
 newUser = {'card':card,'name':name,'coffee':coffee,'admin':False}
 
 users.append(newUser)
