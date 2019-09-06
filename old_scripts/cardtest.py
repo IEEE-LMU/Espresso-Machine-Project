@@ -1,7 +1,7 @@
 import pickle
 import hashlib
 
-f = open('./users','r')
+f = open('user_db.txt','r')
 users = pickle.load(f)
 f.close()
 

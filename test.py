@@ -97,6 +97,8 @@ class MainWindow(QMainWindow):
 
     # create new user profile
     def create_user(self):
+        self.new_user_card = self.text_input_new_user.text()
+
         name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
         drinks = ('Espresso', 'Cappuccino', 'Latte')
         drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", drinks, 0, False)
@@ -104,8 +106,7 @@ class MainWindow(QMainWindow):
             choice_in_integer = drinks.index(drink_choice) + 1
             self.save_user(name, choice_in_integer, self.encode_card(self.text_input_new_user.text()))
             self.text_input_new_user.setText('')
-            QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok,
-                                 QMessageBox.Ok)
+            QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
 
     # save new user profile to list of existing users
     def save_user(self, name, choice, card):
