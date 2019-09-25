@@ -69,12 +69,8 @@ class MainWindow(QMainWindow):
         self.creation_button.move(327, 215)
         self.creation_button.clicked.connect(self.create_user)
 
-    # begin brew for returning users
-    @pyqtSlot()
-    def begin_brew(self):
-        drinks = ('Espresso', 'Cappuccino', 'Latte')
-        search_key = self.encode_card(self.text_input_returning_user.text())
-
+    # checking if user exists
+    def user_exists(self, search_key):
         with open('user_db.txt', 'r') as f:
             users = f.read()
         users_json = json.loads(users) if users else []
@@ -84,6 +80,16 @@ class MainWindow(QMainWindow):
             if user['card'] == search_key:
                 contact = user
                 break
+
+        return contact
+
+    # begin brew for returning users
+    @pyqtSlot()
+    def begin_brew(self):
+        drinks = ('Espresso', 'Cappuccino', 'Latte')
+        search_key = self.encode_card(self.text_input_returning_user.text())
+
+        contact = self.user_exists(search_key)
 
         if contact == None:
             QMessageBox.critical(self, 'Error!', 'User Not Found, trying creating a new profile.', QMessageBox.Ok, QMessageBox.Ok)
@@ -97,16 +103,21 @@ class MainWindow(QMainWindow):
 
     # create new user profile
     def create_user(self):
-        self.new_user_card = self.text_input_new_user.text()
+        self.new_user_card = self.encode_card(self.text_input_new_user.text())
 
-        name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
-        drinks = ('Espresso', 'Cappuccino', 'Latte')
-        drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", drinks, 0, False)
-        if drink_choice and ok_pressed:
-            choice_in_integer = drinks.index(drink_choice) + 1
-            self.save_user(name, choice_in_integer, self.encode_card(self.text_input_new_user.text()))
-            self.text_input_new_user.setText('')
-            QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
+        contact = self.user_exists(new_user_card)
+
+        if contact != None:
+            QMessageBox.critical(self, 'Error!', 'User Already Exists. Swipe card in Returning User Box', QMessageBox.Ok, QMessageBox.Ok)
+        else:
+            name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
+            drinks = ('Espresso', 'Cappuccino', 'Latte')
+            drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", drinks, 0, False)
+            if drink_choice and ok_pressed:
+                choice_in_integer = drinks.index(drink_choice) + 1
+                self.save_user(name, choice_in_integer, self.new_user_card.text())
+                self.text_input_new_user.setText('')
+                QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
 
     # save new user profile to list of existing users
     def save_user(self, name, choice, card):
