@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0da2c7b-4a00-4fee-9fde-a1af65d8e341" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cardtest.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_scripts/cardtest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deleteuser.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_scripts/deleteuser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newuser.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_scripts/newuser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_db.txt" beforeDir="false" afterPath="$PROJECT_DIR$/user_db.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +98,11 @@
       <updated>1555032781826</updated>
       <workItem from="1566579267270" duration="3028000" />
       <workItem from="1567569877120" duration="1195000" />
-      <workItem from="1567797732521" duration="2471000" />
+      <workItem from="1567797732521" duration="4064000" />
+      <workItem from="1569381370116" duration="3004000" />
+      <workItem from="1569440851658" duration="120000" />
+      <workItem from="1569986322206" duration="920000" />
+      <workItem from="1571195839401" duration="751000" />
     </task>
     <servers />
   </component>
@@ -122,6 +123,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Espresso_Machine_Project$test.coverage" NAME="test Coverage Results" MODIFIED="1566672301378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Espresso_Machine_Project$test.coverage" NAME="test Coverage Results" MODIFIED="1569986358919" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
