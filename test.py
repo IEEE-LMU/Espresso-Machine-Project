@@ -99,15 +99,19 @@ class MainWindow(QMainWindow):
         name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
         drinks = ('Espresso', 'Cappuccino', 'Latte')
         drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", drinks, 0, False)
-        if drink_choice and ok_pressed:
-            choice_in_integer = drinks.index(drink_choice) + 1
-            self.save_user(name, choice_in_integer, self.encode_card(self.text_input_user.text()))
+        sizes = ('Small', 'Large')
+        size_choice, ok_pressed = QInputDialog.getItem(self, "Get Size", "Select Size:", sizes, 0, False)
+        if size_choice and drink_choice and ok_pressed:
+            drinks_in_integer = drinks.index(drink_choice) + 1
+            sizes_in_integer = sizes.index(size_choice) + 1
+            self.save_user(name, drinks_in_integer, sizes_in_integer, self.encode_card(self.text_input_user.text()))
             self.text_input_user.setText('')
             QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
 
+        
     # save new user profile to list of existing users
-    def save_user(self, name, choice, card):
-        json_profile = {'card':card, 'name':name,'coffee':choice}
+    def save_user(self, name, drink, size, card):
+        json_profile = {'card':card, 'name':name,'drink':drink, 'size':size}
         with open('user_db.txt', 'r') as f:
             users = f.read()
 
