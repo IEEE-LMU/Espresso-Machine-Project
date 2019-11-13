@@ -104,9 +104,9 @@ class MainWindow(QMainWindow):
         name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
         user_choice = self.choosing_stage()
 
-        if result_dict['size_choice'] and result_dict['drink_choice'] and result_dict['ok_pressed']:
-            drinks_in_integer = self.drinks.index(drink_choice) + 1
-            sizes_in_integer = self.sizes.index(size_choice) + 1
+        if user_choice['size_choice'] and user_choice['drink_choice'] and user_choice['ok_pressed']:
+            drinks_in_integer = self.drinks.index(user_choice['drink_choice']) + 1
+            sizes_in_integer = self.sizes.index(user_choice['size_choice']) + 1
             self.save_user(name, drinks_in_integer, sizes_in_integer, self.encode_card(self.text_input_user.text()))
             self.text_input_user.setText('')
             QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
