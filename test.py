@@ -12,6 +12,8 @@ class MainWindow(QMainWindow):
     # fill in dimension and general window variables
     def __init__(self):
         super().__init__()
+        self.drinks = ('Espresso', 'Cappuccino', 'Latte')
+        self.sizes = ('Small', 'Large')
         self.title = 'IEEE Espresso Machine'
         self.left = 200
         self.top = 200
@@ -44,11 +46,17 @@ class MainWindow(QMainWindow):
         self.text_input_user.resize(100, 100)
         self.text_input_user.move(100, 130)
 
-        # initialize brewing button, connect to turnOn method
-        self.brew_button = QPushButton('Start Brewing!', self)
-        self.brew_button.resize(150, 32)
-        self.brew_button.move(75, 260)
-        self.brew_button.clicked.connect(self.begin_brew)
+        # initialize the usual button, connect to turnOn method
+        self.usual_button = QPushButton('the usual', self)
+        self.usual_button.resize(75, 45)
+        self.usual_button.move(175, 260)
+        self.usual_button.clicked.connect(self.begin_brew)
+
+        # initialize switch it up button, connect to turnOn method
+        self.switch_it_up_button = QPushButton('switch it up', self)
+        self.switch_it_up_button.resize(75, 45)
+        self.switch_it_up_button.move(50, 260)
+        self.switch_it_up_button.clicked.connect(self.new_brew)
 
         # initialize "please swipe your onecard" label
         self.swipe_card_label = QLabel(self)
@@ -65,7 +73,6 @@ class MainWindow(QMainWindow):
     # begin brew for returning users
     @pyqtSlot()
     def begin_brew(self):
-        drinks = ('Espresso', 'Cappuccino', 'Latte')
         search_key = self.encode_card(self.text_input_user.text())
 
         with open('user_db.txt', 'r') as f:
@@ -83,25 +90,23 @@ class MainWindow(QMainWindow):
                                  QMessageBox.Ok)
         else:
             contact_name = contact['name']
-            contact_coffee = drinks[contact['coffee'] - 1]
+            contact_drink = self.drinks[contact['drink'] - 1]
+            contact_size = self.drinks[contact['size'] - 1]
             QMessageBox.information(self, 'Hello, {}!'.format(contact_name.split(' ')[0]),
-                                    'Hello {name}!\nOne {choice}, coming right up!'.format(name=contact_name,
-                                                                                           choice=contact_coffee))
+                                    'Hello {name}!\nOne {size} {choice}, coming right up!'.format(name=contact_name, size=contact_size,
+                                                                                           choice=contact_drink))
             # TODO: THIS IS WHERE WE SEND THE SIGNAL TO THE RELAY
         self.text_input_user.setText('')
 
     # create new user profile
     def create_user(self):
         self.new_user_card = self.text_input_user.text()
-
         name = QInputDialog.getText(self, 'Get Name', 'Enter Your Name:', QLineEdit.Normal, '')[0]
-        drinks = ('Espresso', 'Cappuccino', 'Latte')
-        drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", drinks, 0, False)
-        sizes = ('Small', 'Large')
-        size_choice, ok_pressed = QInputDialog.getItem(self, "Get Size", "Select Size:", sizes, 0, False)
-        if size_choice and drink_choice and ok_pressed:
-            drinks_in_integer = drinks.index(drink_choice) + 1
-            sizes_in_integer = sizes.index(size_choice) + 1
+        user_choice = self.choosing_stage()
+
+        if result_dict['size_choice'] and result_dict['drink_choice'] and result_dict['ok_pressed']:
+            drinks_in_integer = self.drinks.index(drink_choice) + 1
+            sizes_in_integer = self.sizes.index(size_choice) + 1
             self.save_user(name, drinks_in_integer, sizes_in_integer, self.encode_card(self.text_input_user.text()))
             self.text_input_user.setText('')
             QMessageBox.information(self, 'Success!', 'User Created!', QMessageBox.Ok, QMessageBox.Ok)
@@ -122,7 +127,18 @@ class MainWindow(QMainWindow):
         hash = hashlib.sha256(card.encode())
         return hash.hexdigest()
 
+    # method to prompt user for drink and size choice
+    def choosing_stage(self):
+        drink_choice, ok_pressed = QInputDialog.getItem(self, "Get Drink", "Select Coffee Type:", self.drinks, 0, False)
+        size_choice, ok_pressed = QInputDialog.getItem(self, "Get Size", "Select Size:", self.sizes, 0, False)
+        result_dict = {'drink_choice' : drink_choice, 'size_choice' : size_choice, 'ok_pressed' : ok_pressed}
+        return result_dict
 
+    def new_brew(self):
+        result_dict = self.choosing_stage()
+        if result_dict['ok_pressed']:
+            QMessageBox.information(self, 'options changed', 'Sure!\nOne {size} {choice}, coming right up!'.format(size=result_dict['size_choice'], 
+            choice=result_dict['drink_choice']))
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = MainWindow()
